@@ -1,0 +1,10 @@
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\bin\Debug\Paint App OOP.exe.config
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\bin\Debug\Paint App OOP.exe
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\bin\Debug\Paint App OOP.pdb
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\obj\Debug\Paint App OOP.csproj.AssemblyReference.cache
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\obj\Debug\Paint_App_OOP.Paint.resources
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\obj\Debug\Paint_App_OOP.Properties.Resources.resources
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\obj\Debug\Paint App OOP.csproj.GenerateResource.cache
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\obj\Debug\Paint App OOP.csproj.CoreCompileInputs.cache
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\obj\Debug\Paint App OOP.exe
+C:\Users\galma\source\repos\Paint App OOP\Paint App OOP\obj\Debug\Paint App OOP.pdb
