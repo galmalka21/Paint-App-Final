@@ -24,7 +24,7 @@ namespace Paint_App_OOP
             sl = new ShapeList();
 
         }
-
+        Pen pen = new Pen(Color.Black, 1);
         FigureList fl;
         ShapeList sl;
         Bitmap board;
@@ -32,8 +32,9 @@ namespace Paint_App_OOP
         bool paint = false;
         Point px, py;
         Circle circle;
-        Pencil penc;
-        int index;
+        Retrangle retrangle;
+        Pencil pencil;
+        int index , x,y;
         int count;
 
         //User Left Click 
@@ -45,14 +46,18 @@ namespace Paint_App_OOP
                 case 0:
                     break;
                 case 1:
-                    penc = new Pencil();
-                    fl.firgueList[fl.firgueList.Count] = penc;
+                    pencil = new Pencil();
+                    fl.firgueList[fl.firgueList.Count] = pencil;
                     break;
                 case 2:
                     break;
                 case 3:
                     circle = new Circle();
                     circle.Start = e.Location;
+                    break;
+                case 4:
+                    retrangle = new Retrangle();
+                    retrangle.Start = e.Location;
                     break;
             }
 
@@ -72,11 +77,15 @@ namespace Paint_App_OOP
                     sl.shapeList.Add(sl.shapeList.Count, circle);
                     break;
                 case 4:
+                    retrangle.End = e.Location;
+                    retrangle.Draw(Color.Black, g, e, py);
+                    sl.shapeList.Add(sl.shapeList.Count, retrangle);
                     break;
                 case 5:
                     break;
             }
 
+            px = e.Location;
             panel_board.Invalidate();
             label1.Text = sl.shapeList.Count.ToString();
         }
@@ -90,8 +99,8 @@ namespace Paint_App_OOP
                 switch (index)
                 {
                     case 1:
-                        penc.thickness = bar_thickness.Value;
-                        penc.Draw(Color.Black, g, e,py);
+                        pencil.thickness = bar_thickness.Value;
+                        pencil.Draw(Color.Black, g, e,py);
                         break;
                     case 2:
                         Eraser er = new Eraser();
@@ -100,7 +109,8 @@ namespace Paint_App_OOP
                         break;
                 }
             }
-          
+            x = e.X;
+            y = e.Y;
             panel_board.Invalidate();
 
         }
@@ -117,13 +127,21 @@ namespace Paint_App_OOP
 
         private void panel_board_Paint(object sender, PaintEventArgs e)
         {
-            for (int i = 0; i < fl.firgueList.Count; ++i)
-            {
-                fl[i].Draw(Color.Black, g);
-            }
-            for (int i = 0; i < sl.shapeList.Count; ++i)
-            {
-                sl[i].Draw(Color.Black, g, sl[i].Start, sl[i].End);
+            Graphics g = e.Graphics;
+            if (paint) {
+                switch (index)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
             }
         }
 
