@@ -12,6 +12,7 @@ namespace Paint_App_OOP
     abstract class Figures
     {
         public Point Start,Scale,End;
+        public Color color { get; set; }
        
         public int count = 1;
         public int thickness = 1;
@@ -57,6 +58,7 @@ namespace Paint_App_OOP
         }
         public override void Draw(Color c, Graphics g, MouseEventArgs e,Point startPos)
         {
+            color = c;
             SolidBrush b = new SolidBrush(c);
             Point p = new Point(e.X, e.Y);
             Start = p;
@@ -88,8 +90,13 @@ namespace Paint_App_OOP
         {
             //**
             SolidBrush b = new SolidBrush(c);
+            Pen pen = new Pen(Color.Red, 1);
             int ct = fl.firgueList.Count; ;
-            for(int i = 0; i < ct; ++i)
+            int radiusX, radiusY;
+
+
+            //Remove the pencil brush pixel by pixel if its in the list
+            for (int i = 0; i < ct; ++i)
             {
 
                {
@@ -106,16 +113,18 @@ namespace Paint_App_OOP
                }    
             }
 
-
-            Pen pen = new Pen(Color.Red, 1);
-            int radiusX,radiusY;
-
+            //Check if one of the shapes is on the bitmap, if yes deletes the whole shape
             for (int i =0;i < sl.shapeList.Count; ++i)
             {
+                //Retangles
                 if (sl[i, 0].isOn(sl[i, 0].End, sl[i, 0].Start, e.Location))
                 {
                     int scaleX = sl[i, 0].End.X - sl[i,0].Start.X ;
                     int scaleY = sl[i, 0].End.Y - sl[i, 0].Start.Y;
+                    if (scaleX < 0)
+                        scaleX = scaleX * (-1);
+                    if (scaleY < 0)
+                        scaleY = scaleY * (-1);
                     for (int k = 0;k < scaleX; ++k)
                     {
                         g.FillRectangle(b, sl[i, 0].Start.X + k, sl[i, 0].Start.Y, 1, 1);
@@ -129,6 +138,7 @@ namespace Paint_App_OOP
                     sl.shapeList.RemoveAt(i);
                     return;
                 }
+                //Circles
                 try {
                     if (sl[i].isOn(sl[i].End, sl[i].Start, e.Location))
                         radiusX = (sl[i].End.X - sl[i].Start.X) / 2;
@@ -152,7 +162,7 @@ namespace Paint_App_OOP
                 
             }
 
-
+            //Remove the figure from the list if its count = 0
             for(int i = 0; i < ct; ++i)
             {
                 try
@@ -189,6 +199,7 @@ namespace Paint_App_OOP
             g.DrawEllipse(pen, s.X, s.Y, e.X, e.Y);
 
         }
+       
         public override bool isOn(Point endPoint, Point startPos,Point p)
         {
             return ((p.X - startPos.X) ^ 2 / (endPoint.X - startPos.X) ^ 2 + (p.Y - startPos.Y) ^ 2 / (endPoint.Y - startPos.Y) ^ 2) <= 1;
@@ -205,17 +216,37 @@ namespace Paint_App_OOP
         }
         public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos)
         {
+            Point tempPoint;
+            int tempX = 0, tempY = 0;
             Start = startPos;
             End = e.Location;
             Scale.X = End.X - Start.X;
             Scale.Y = End.Y - Start.Y;
-            if(Scale.X < 0)
+            //Left Down \>
+            if(Scale.X < 0 && Scale.Y > 0)
             {
                 Scale.X = Scale.X * (-1);
+                tempX = Start.X;
+                Start.X = End.X;
+                End.X = tempX;
             }
-            if (Scale.Y < 0)
+            //Right Up 
+            else if(Scale.X > 0 && Scale.Y < 0)
             {
                 Scale.Y = Scale.Y * (-1);
+                tempY = Start.Y;
+                Start.Y = End.Y;
+                End.Y = tempY;
+            }
+            //Left Up
+            else if(Scale.X < 0 && Scale.Y < 0)
+            {
+                Scale.X = Scale.X * (-1);
+                Scale.Y = Scale.Y * (-1);
+                tempPoint = Start;
+                Start = End;
+                End = Start;
+
             }
 
             Pen pen = new Pen(c, 1);
@@ -223,7 +254,7 @@ namespace Paint_App_OOP
         }
         public override bool isOn(Point endPoint, Point startPos, Point p)
         {
-            if (p.X <= endPoint.X && p.X >= startPos.X && p.Y <= endPoint.Y && p.Y >= startPos.Y)
+            if (p.X <= End.X && p.X >= Start.X && p.Y <= End.Y && p.Y >= Start.Y)
             {
                 return true;
             } else

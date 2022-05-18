@@ -30,11 +30,11 @@ namespace Paint_App_OOP
         Bitmap board;
         Graphics g;
         bool paint = false;
-        Point px, py;
+        Point endPoint, startPoint;
         Circle circle;
         Retrangle retrangle;
         Pencil pencil;
-        int index , x,y;
+        int index , mmx,mmy;
         int count;
 
         //User Left Click 
@@ -62,7 +62,7 @@ namespace Paint_App_OOP
             }
 
             paint = true;
-            py = e.Location;
+            startPoint = e.Location;
 
         }
 
@@ -73,19 +73,19 @@ namespace Paint_App_OOP
             switch (index)
             {
                 case 3:
-                    circle.Draw(Color.Black, g, e, py);
+                    circle.Draw(Color.Black, g, e, startPoint);
                     sl.shapeList.Add(sl.shapeList.Count, circle);
                     break;
                 case 4:
                     retrangle.End = e.Location;
-                    retrangle.Draw(Color.Black, g, e, py);
+                    retrangle.Draw(Color.Black, g, e, startPoint);
                     sl.shapeList.Add(sl.shapeList.Count, retrangle);
                     break;
                 case 5:
                     break;
             }
 
-            px = e.Location;
+            endPoint = e.Location;
             panel_board.Invalidate();
             label1.Text = sl.shapeList.Count.ToString();
         }
@@ -100,17 +100,17 @@ namespace Paint_App_OOP
                 {
                     case 1:
                         pencil.thickness = bar_thickness.Value;
-                        pencil.Draw(Color.Black, g, e,py);
+                        pencil.Draw(Color.Black, g, e, startPoint);
                         break;
                     case 2:
                         Eraser er = new Eraser();
                         er.thickness = bar_thickness.Value;
-                        er.Draw(Color.White, g, e,py, fl,sl);
+                        er.Draw(Color.White, g, e, startPoint, fl,sl);
                         break;
                 }
             }
-            x = e.X;
-            y = e.Y;
+            mmx = e.X;
+            mmy = e.Y;
             panel_board.Invalidate();
 
         }
@@ -127,6 +127,7 @@ namespace Paint_App_OOP
 
         private void panel_board_Paint(object sender, PaintEventArgs e)
         {
+            //Draw the figure on the panel
             Graphics g = e.Graphics;
             if (paint) {
                 switch (index)
@@ -143,6 +144,7 @@ namespace Paint_App_OOP
                         break;
                 }
             }
+            //Refresh Panel and fill all the points
         }
 
         private void btn_pencil_Click(object sender, EventArgs e)
