@@ -38,14 +38,14 @@ namespace Paint_App_OOP
             this.btn_eraser = new System.Windows.Forms.Button();
             this.btn_pencil = new System.Windows.Forms.Button();
             this.btn_fill = new System.Windows.Forms.Button();
-            this.btn_color = new System.Windows.Forms.Button();
+            this.btn_move = new System.Windows.Forms.Button();
             this.btn_selected = new System.Windows.Forms.Button();
             this.panel_bottom = new System.Windows.Forms.Panel();
             this.btn_exit = new System.Windows.Forms.Button();
+            this.btn_clear = new System.Windows.Forms.Button();
             this.btn_load = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.panel_board = new System.Windows.Forms.PictureBox();
-            this.btn_clear = new System.Windows.Forms.Button();
             this.panel_tools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bar_thickness)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panel_colorpicker)).BeginInit();
@@ -64,21 +64,23 @@ namespace Paint_App_OOP
             this.panel_tools.Controls.Add(this.btn_eraser);
             this.panel_tools.Controls.Add(this.btn_pencil);
             this.panel_tools.Controls.Add(this.btn_fill);
-            this.panel_tools.Controls.Add(this.btn_color);
+            this.panel_tools.Controls.Add(this.btn_move);
             this.panel_tools.Controls.Add(this.btn_selected);
             this.panel_tools.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_tools.Location = new System.Drawing.Point(0, 0);
+            this.panel_tools.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel_tools.Name = "panel_tools";
-            this.panel_tools.Size = new System.Drawing.Size(784, 124);
+            this.panel_tools.Size = new System.Drawing.Size(1568, 238);
             this.panel_tools.TabIndex = 0;
             // 
             // bar_thickness
             // 
             this.bar_thickness.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.bar_thickness.Location = new System.Drawing.Point(288, 79);
+            this.bar_thickness.Location = new System.Drawing.Point(576, 152);
+            this.bar_thickness.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.bar_thickness.Minimum = 1;
             this.bar_thickness.Name = "bar_thickness";
-            this.bar_thickness.Size = new System.Drawing.Size(484, 45);
+            this.bar_thickness.Size = new System.Drawing.Size(968, 90);
             this.bar_thickness.TabIndex = 3;
             this.bar_thickness.Value = 1;
             this.bar_thickness.Scroll += new System.EventHandler(this.bar_thickness_Scroll);
@@ -87,9 +89,10 @@ namespace Paint_App_OOP
             // 
             this.panel_colorpicker.Cursor = System.Windows.Forms.Cursors.Hand;
             this.panel_colorpicker.Image = global::Paint_App_OOP.Properties.Resources.color_palette;
-            this.panel_colorpicker.Location = new System.Drawing.Point(3, 3);
+            this.panel_colorpicker.Location = new System.Drawing.Point(6, 6);
+            this.panel_colorpicker.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel_colorpicker.Name = "panel_colorpicker";
-            this.panel_colorpicker.Size = new System.Drawing.Size(238, 118);
+            this.panel_colorpicker.Size = new System.Drawing.Size(476, 227);
             this.panel_colorpicker.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.panel_colorpicker.TabIndex = 3;
             this.panel_colorpicker.TabStop = false;
@@ -106,9 +109,10 @@ namespace Paint_App_OOP
             this.btn_line.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_line.ForeColor = System.Drawing.Color.White;
             this.btn_line.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btn_line.Location = new System.Drawing.Point(708, 13);
+            this.btn_line.Location = new System.Drawing.Point(1416, 25);
+            this.btn_line.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_line.Name = "btn_line";
-            this.btn_line.Size = new System.Drawing.Size(64, 64);
+            this.btn_line.Size = new System.Drawing.Size(128, 123);
             this.btn_line.TabIndex = 7;
             this.btn_line.Text = "Line";
             this.btn_line.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -126,9 +130,10 @@ namespace Paint_App_OOP
             this.btn_rectangle.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_rectangle.ForeColor = System.Drawing.Color.White;
             this.btn_rectangle.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btn_rectangle.Location = new System.Drawing.Point(638, 13);
+            this.btn_rectangle.Location = new System.Drawing.Point(1276, 25);
+            this.btn_rectangle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_rectangle.Name = "btn_rectangle";
-            this.btn_rectangle.Size = new System.Drawing.Size(64, 64);
+            this.btn_rectangle.Size = new System.Drawing.Size(128, 123);
             this.btn_rectangle.TabIndex = 6;
             this.btn_rectangle.Text = "Rectangle";
             this.btn_rectangle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -146,9 +151,10 @@ namespace Paint_App_OOP
             this.btn_circle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_circle.ForeColor = System.Drawing.Color.White;
             this.btn_circle.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btn_circle.Location = new System.Drawing.Point(568, 13);
+            this.btn_circle.Location = new System.Drawing.Point(1136, 25);
+            this.btn_circle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_circle.Name = "btn_circle";
-            this.btn_circle.Size = new System.Drawing.Size(64, 64);
+            this.btn_circle.Size = new System.Drawing.Size(128, 123);
             this.btn_circle.TabIndex = 5;
             this.btn_circle.Text = "Circle";
             this.btn_circle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -166,9 +172,10 @@ namespace Paint_App_OOP
             this.btn_eraser.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_eraser.ForeColor = System.Drawing.Color.White;
             this.btn_eraser.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btn_eraser.Location = new System.Drawing.Point(498, 13);
+            this.btn_eraser.Location = new System.Drawing.Point(996, 25);
+            this.btn_eraser.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_eraser.Name = "btn_eraser";
-            this.btn_eraser.Size = new System.Drawing.Size(64, 64);
+            this.btn_eraser.Size = new System.Drawing.Size(128, 123);
             this.btn_eraser.TabIndex = 4;
             this.btn_eraser.Text = "Eraser";
             this.btn_eraser.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -186,9 +193,10 @@ namespace Paint_App_OOP
             this.btn_pencil.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_pencil.ForeColor = System.Drawing.Color.White;
             this.btn_pencil.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_pencil.Location = new System.Drawing.Point(428, 13);
+            this.btn_pencil.Location = new System.Drawing.Point(856, 25);
+            this.btn_pencil.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_pencil.Name = "btn_pencil";
-            this.btn_pencil.Size = new System.Drawing.Size(64, 64);
+            this.btn_pencil.Size = new System.Drawing.Size(128, 123);
             this.btn_pencil.TabIndex = 3;
             this.btn_pencil.Text = "Pencil";
             this.btn_pencil.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -206,41 +214,44 @@ namespace Paint_App_OOP
             this.btn_fill.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_fill.ForeColor = System.Drawing.Color.White;
             this.btn_fill.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_fill.Location = new System.Drawing.Point(358, 13);
+            this.btn_fill.Location = new System.Drawing.Point(716, 25);
+            this.btn_fill.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_fill.Name = "btn_fill";
-            this.btn_fill.Size = new System.Drawing.Size(64, 64);
+            this.btn_fill.Size = new System.Drawing.Size(128, 123);
             this.btn_fill.TabIndex = 2;
             this.btn_fill.Text = "Fill";
             this.btn_fill.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btn_fill.UseVisualStyleBackColor = true;
             this.btn_fill.Click += new System.EventHandler(this.btn_fill_Click);
             // 
-            // btn_color
+            // btn_move
             // 
-            this.btn_color.BackgroundImage = global::Paint_App_OOP.Properties.Resources.cursor__1_;
-            this.btn_color.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btn_color.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_color.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btn_color.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btn_color.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_color.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_color.ForeColor = System.Drawing.Color.White;
-            this.btn_color.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_color.Location = new System.Drawing.Point(288, 13);
-            this.btn_color.Name = "btn_color";
-            this.btn_color.Size = new System.Drawing.Size(64, 64);
-            this.btn_color.TabIndex = 1;
-            this.btn_color.Text = "Move";
-            this.btn_color.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btn_color.UseVisualStyleBackColor = true;
-            this.btn_color.Click += new System.EventHandler(this.btn_color_Click);
+            this.btn_move.BackgroundImage = global::Paint_App_OOP.Properties.Resources.cursor__1_;
+            this.btn_move.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btn_move.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_move.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btn_move.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btn_move.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_move.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_move.ForeColor = System.Drawing.Color.White;
+            this.btn_move.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_move.Location = new System.Drawing.Point(576, 25);
+            this.btn_move.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btn_move.Name = "btn_move";
+            this.btn_move.Size = new System.Drawing.Size(128, 123);
+            this.btn_move.TabIndex = 1;
+            this.btn_move.Text = "Move";
+            this.btn_move.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btn_move.UseVisualStyleBackColor = true;
+            this.btn_move.Click += new System.EventHandler(this.btn_move_Click);
             // 
             // btn_selected
             // 
             this.btn_selected.BackColor = System.Drawing.Color.White;
-            this.btn_selected.Location = new System.Drawing.Point(247, 29);
+            this.btn_selected.Location = new System.Drawing.Point(494, 56);
+            this.btn_selected.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_selected.Name = "btn_selected";
-            this.btn_selected.Size = new System.Drawing.Size(35, 33);
+            this.btn_selected.Size = new System.Drawing.Size(70, 63);
             this.btn_selected.TabIndex = 0;
             this.btn_selected.UseVisualStyleBackColor = false;
             // 
@@ -252,26 +263,40 @@ namespace Paint_App_OOP
             this.panel_bottom.Controls.Add(this.btn_load);
             this.panel_bottom.Controls.Add(this.btn_save);
             this.panel_bottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel_bottom.Location = new System.Drawing.Point(0, 460);
+            this.panel_bottom.Location = new System.Drawing.Point(0, 885);
+            this.panel_bottom.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel_bottom.Name = "panel_bottom";
-            this.panel_bottom.Size = new System.Drawing.Size(784, 51);
+            this.panel_bottom.Size = new System.Drawing.Size(1568, 98);
             this.panel_bottom.TabIndex = 1;
             // 
             // btn_exit
             // 
-            this.btn_exit.Location = new System.Drawing.Point(697, 16);
+            this.btn_exit.Location = new System.Drawing.Point(1394, 31);
+            this.btn_exit.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_exit.Name = "btn_exit";
-            this.btn_exit.Size = new System.Drawing.Size(75, 23);
+            this.btn_exit.Size = new System.Drawing.Size(150, 44);
             this.btn_exit.TabIndex = 2;
             this.btn_exit.Text = "Exit";
             this.btn_exit.UseVisualStyleBackColor = true;
             this.btn_exit.Click += new System.EventHandler(this.btn_exit_Click);
             // 
+            // btn_clear
+            // 
+            this.btn_clear.Location = new System.Drawing.Point(1232, 31);
+            this.btn_clear.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btn_clear.Name = "btn_clear";
+            this.btn_clear.Size = new System.Drawing.Size(150, 44);
+            this.btn_clear.TabIndex = 1;
+            this.btn_clear.Text = "Clear";
+            this.btn_clear.UseVisualStyleBackColor = true;
+            this.btn_clear.Click += new System.EventHandler(this.btn_clear_Click);
+            // 
             // btn_load
             // 
-            this.btn_load.Location = new System.Drawing.Point(94, 16);
+            this.btn_load.Location = new System.Drawing.Point(188, 31);
+            this.btn_load.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_load.Name = "btn_load";
-            this.btn_load.Size = new System.Drawing.Size(75, 23);
+            this.btn_load.Size = new System.Drawing.Size(150, 44);
             this.btn_load.TabIndex = 1;
             this.btn_load.Text = "Load";
             this.btn_load.UseVisualStyleBackColor = true;
@@ -279,9 +304,10 @@ namespace Paint_App_OOP
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(13, 16);
+            this.btn_save.Location = new System.Drawing.Point(26, 31);
+            this.btn_save.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(75, 23);
+            this.btn_save.Size = new System.Drawing.Size(150, 44);
             this.btn_save.TabIndex = 0;
             this.btn_save.Text = "Save";
             this.btn_save.UseVisualStyleBackColor = true;
@@ -292,8 +318,9 @@ namespace Paint_App_OOP
             this.panel_board.BackColor = System.Drawing.Color.White;
             this.panel_board.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_board.Location = new System.Drawing.Point(0, 0);
+            this.panel_board.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel_board.Name = "panel_board";
-            this.panel_board.Size = new System.Drawing.Size(784, 511);
+            this.panel_board.Size = new System.Drawing.Size(1568, 983);
             this.panel_board.TabIndex = 2;
             this.panel_board.TabStop = false;
             this.panel_board.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_board_Paint);
@@ -302,25 +329,16 @@ namespace Paint_App_OOP
             this.panel_board.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_board_MouseMove);
             this.panel_board.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_board_MouseUp);
             // 
-            // btn_clear
-            // 
-            this.btn_clear.Location = new System.Drawing.Point(616, 16);
-            this.btn_clear.Name = "btn_clear";
-            this.btn_clear.Size = new System.Drawing.Size(75, 23);
-            this.btn_clear.TabIndex = 1;
-            this.btn_clear.Text = "Clear";
-            this.btn_clear.UseVisualStyleBackColor = true;
-            this.btn_clear.Click += new System.EventHandler(this.btn_clear_Click);
-            // 
             // Paint
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 511);
+            this.ClientSize = new System.Drawing.Size(1568, 983);
             this.Controls.Add(this.panel_bottom);
             this.Controls.Add(this.panel_tools);
             this.Controls.Add(this.panel_board);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "Paint";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
@@ -343,7 +361,7 @@ namespace Paint_App_OOP
         private System.Windows.Forms.Button btn_eraser;
         private System.Windows.Forms.Button btn_pencil;
         private System.Windows.Forms.Button btn_fill;
-        private System.Windows.Forms.Button btn_color;
+        private System.Windows.Forms.Button btn_move;
         private System.Windows.Forms.Button btn_selected;
         private System.Windows.Forms.Panel panel_bottom;
         private System.Windows.Forms.PictureBox panel_board;

@@ -48,17 +48,21 @@ namespace Paint_App_OOP
         
         //Variables
         Point endPoint, startPoint;
-        int index , count;
+        int index , countFL , countSL;
         bool load = false;
         
 
+       
         //User Left Click 
         private void panel_board_MouseDown(object sender, MouseEventArgs e)
         {
-            count = fl.firgueList.Count;
+            countFL = fl.firgueList.Count;
+            countSL = sl.shapeList.Count;
             switch (index)
             {
                 case 0:
+                    OutLine(e.Location);
+                    startPoint = e.Location;
                     break;
                 case 1:
                     pencil = new Pencil();
@@ -95,6 +99,9 @@ namespace Paint_App_OOP
             paint = false;
             switch (index)
             {
+                case 0:
+                    MoveObject(e.Location);
+                    break;
                 case 3:
                     circle.End = e.Location;
                     circle.Draw(color, g, e, startPoint);
@@ -140,17 +147,8 @@ namespace Paint_App_OOP
             panel_board.Invalidate();
 
         }
-
-        private void bar_thickness_Scroll(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void btn_color_Click(object sender, EventArgs e)
-        {
-            index = 0;
-        }
-
+        //Validate Board Function 
+        //Strech objects on mouse move, ReDraw BM after load
         private void panel_board_Paint(object sender, PaintEventArgs e)
         {
             //Draw the figure on the panel
@@ -177,9 +175,9 @@ namespace Paint_App_OOP
                 reDraw();
             }
             load = false;
-            //Refresh Panel and fill all the points
         }
 
+        //ReDraw Panel After Load
         public void reDraw()
         {
             for (int i = 0; i < sl.shapeList.Count; i++)
@@ -216,13 +214,172 @@ namespace Paint_App_OOP
             {
                 try
                 {
-                    fl[j].Draw(fl[j].color, g);
+                    for(int k = 0; k < fl[j].pencilList.Count; k++)
+                    {
+                        Point p = (Point)fl[j].pencilList.GetByIndex(k);
+                        fl[j].Draw(fl[j].color, g,p);
+                    }
+                        
                 }
                 catch
                 {
 
                 }
             }
+        }
+        
+        //Validate Pixels
+        private void validate(Bitmap bm, Stack<Point> sp, int x, int y, Color old_color, Color new_color)
+        {
+            Color cx = bm.GetPixel(x, y);
+            if(cx == old_color)
+            {
+                sp.Push(new Point(x, y));
+                bm.SetPixel(x, y, color);
+            }
+        }
+        //Fill Pixels
+        public void Fill(Bitmap bm,int x,int y,Color new_color)
+        {
+            old_color = bm.GetPixel(x, y);
+            Stack<Point> pixel = new Stack<Point>();
+            pixel.Push(new Point(x, y));
+            bm.SetPixel(x, y, new_color);
+            if (old_color == new_color) return;
+
+            while(pixel.Count > 0)
+            {
+                Point pt = (Point)pixel.Pop();
+                if(pt.X > 0 && pt.Y >0 && pt.X <bm.Width -1 && pt.Y < bm.Height - 1){
+                    validate(bm, pixel, pt.X - 1, pt.Y - 1, old_color, new_color);
+                    validate(bm, pixel, pt.X , pt.Y - 1, old_color, new_color);
+                    validate(bm, pixel, pt.X + 1, pt.Y, old_color, new_color);
+                    validate(bm, pixel, pt.X, pt.Y + 1, old_color, new_color);
+                }
+            }
+
+        }
+
+        //Set Point on color board
+        static Point setPoint(PictureBox pb, Point pt)
+        {
+            float pX = 1f * pb.Image.Width / pb.Width;
+            float pY = 1f * pb.Image.Height / pb.Height;
+            return new Point((int)(pt.X * pX), (int)(pt.Y * pY));
+        }
+        //Select a color from color board
+        private void panel_colorpicker_MouseClick(object sender, MouseEventArgs e)
+        {
+            Point p = setPoint(panel_colorpicker, e.Location);
+            color = ((Bitmap)panel_colorpicker.Image).GetPixel(p.X, p.Y);
+            btn_selected.BackColor = color;
+        }
+        private void panel_board_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (index == 6)
+            {
+                Point p = setPoint(panel_board, e.Location);
+                Fill(board, p.X, p.Y, color);
+            }
+        }
+
+
+        //Create Outline For Clicked Object
+        public void OutLine(Point e)
+        {
+            for (int i = 0; i < countSL; i++)
+            {
+                try
+                {
+                    if (sl[i].isOn(sl[i].End, sl[i].Start, e))
+                    {
+                        sl[i].Selected = true;
+                        sl[i].DrawOutline(g, sl[i].Start, sl[i].End);
+                    }
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    if (sl[i, 0].isOn(sl[i, 0].End, sl[i, 0].Start, e))
+                    {
+                        sl[i, 0].Selected = true;
+                        sl[i, 0].DrawOutline(g, sl[i, 0].Start, sl[i, 0].End);
+                    }
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    if (sl[i, 0, 0].isOn(sl[i, 0, 0].End, sl[i, 0, 0].Start, e))
+                    {
+                        sl[i, 0, 0].Selected = true;
+                        sl[i, 0, 0].DrawOutline(g, sl[i, 0, 0].Start, sl[i, 0, 0].End);
+                    }
+                }
+                catch
+                {
+
+                }
+
+            }
+        }
+        //Move Objects
+        public void MoveObject(Point e)
+        {
+            for (int i = 0; i < countSL; i++)
+            {
+                try
+                {
+                    if (sl[i].isOn(sl[i].End, sl[i].Start, e))
+                    {
+                        sl[i].Move(g, startPoint, e);
+                    }
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    if (sl[i, 0].isOn(sl[i, 0].End, sl[i, 0].Start, e))
+                    {
+                        sl[i, 0].Move(g, startPoint, e);
+                    }
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    if (sl[i, 0, 0].isOn(sl[i, 0, 0].End, sl[i, 0, 0].Start, e))
+                    {
+                        sl[i, 0, 0].DrawOutline(g, startPoint, e);
+                    }
+                }
+                catch
+                {
+
+                }
+
+            }
+        }
+
+
+        //UI Click Listener
+        private void bar_thickness_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_move_Click(object sender, EventArgs e)
+        {
+            index = 0;
         }
         private void btn_pencil_Click(object sender, EventArgs e)
         {
@@ -259,63 +416,20 @@ namespace Paint_App_OOP
 
         private void btn_clear_Click(object sender, EventArgs e)
         {
-            for(int i = 0; i < fl.firgueList.Count; i++)
+            for (int i = 0; i < fl.firgueList.Count; i++)
             {
                 fl.firgueList.RemoveAt(i);
             }
-            for(int j = 0; j < sl.shapeList.Count; j++)
+            for (int j = 0; j < sl.shapeList.Count; j++)
             {
                 sl.shapeList.RemoveAt(j);
             }
 
             g.Clear(Color.White);
         }
-        static Point setPoint(PictureBox pb,Point pt)
-        {
-            float pX = 1f * pb.Image.Width / pb.Width;
-            float pY = 1f * pb.Image.Height / pb.Height;
-            return new Point((int)(pt.X * pX), (int)(pt.Y * pY));
-        }
-        private void panel_colorpicker_MouseClick(object sender, MouseEventArgs e)
-        {
-            Point p = setPoint(panel_colorpicker, e.Location);
-            color = ((Bitmap)panel_colorpicker.Image).GetPixel(p.X,p.Y);
-            btn_selected.BackColor = color;
-        }
-
         
 
-        private void validate(Bitmap bm, Stack<Point> sp, int x, int y, Color old_color, Color new_color)
-        {
-            Color cx = bm.GetPixel(x, y);
-            if(cx == old_color)
-            {
-                sp.Push(new Point(x, y));
-                bm.SetPixel(x, y, color);
-            }
-        }
-
-        public void Fill(Bitmap bm,int x,int y,Color new_color)
-        {
-            old_color = bm.GetPixel(x, y);
-            Stack<Point> pixel = new Stack<Point>();
-            pixel.Push(new Point(x, y));
-            bm.SetPixel(x, y, new_color);
-            if (old_color == new_color) return;
-
-            while(pixel.Count > 0)
-            {
-                Point pt = (Point)pixel.Pop();
-                if(pt.X > 0 && pt.Y >0 && pt.X <bm.Width -1 && pt.Y < bm.Height - 1){
-                    validate(bm, pixel, pt.X - 1, pt.Y - 1, old_color, new_color);
-                    validate(bm, pixel, pt.X , pt.Y - 1, old_color, new_color);
-                    validate(bm, pixel, pt.X + 1, pt.Y, old_color, new_color);
-                    validate(bm, pixel, pt.X, pt.Y + 1, old_color, new_color);
-                }
-            }
-
-        }
-
+        //Save And Load Function With Serialization
         private void btn_save_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -354,13 +468,5 @@ namespace Paint_App_OOP
             }
         }
 
-        private void panel_board_MouseClick(object sender, MouseEventArgs e)
-        {
-            if(index == 6)
-            {
-                Point p = setPoint(panel_board, e.Location);
-                Fill(board, p.X, p.Y, color);
-            }
-        }
     }
 }

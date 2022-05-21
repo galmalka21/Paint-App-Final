@@ -24,11 +24,11 @@ namespace Paint_App_OOP
     class Shapes : Figures
     {
         public Point Start, Scale, End;
+        public bool Selected = false;
 
-        public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos)
-        {
-            
-        }
+        public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos) {}
+        public virtual void Move(Graphics g, Point Start, Point End) { }
+        public virtual void DrawOutline(Graphics g, Point Start, Point End){ }
         public virtual bool isOn(Point startPoint, Point endPoint, Point p)
         {
             return false;
@@ -75,6 +75,15 @@ namespace Paint_App_OOP
             }
             
         }
+        public void Draw(Color c, Graphics g,Point p)
+        {
+            SolidBrush b = new SolidBrush(c);
+            for (int i = 0; i < pencilList.Count; ++i)
+            {
+                g.FillRectangle(b, p.X, p.Y, thickness, thickness);
+            }
+
+        }
 
     }
     [Serializable]
@@ -101,17 +110,15 @@ namespace Paint_App_OOP
             //Remove the pencil brush pixel by pixel if its in the list
             for (int i = 0; i < ct; ++i)
             {
-               {
-                    for(int j = 0; j < thickness; j++)
+                for(int j = 0; j < thickness; j++)
+                {
+                    Point area = e.Location;
+                    if (fl[i].pencilList.ContainsValue(area))
                     {
-                        Point area = e.Location;
-                        if (fl[i].pencilList.ContainsValue(area))
-                        {
-                            fl[i].pencilList.RemoveAt(fl[i].pencilList.IndexOfValue(area));
-                            g.FillRectangle(b, area.X, area.Y, thickness, thickness);
-                        }
-                    }   
-               }    
+                        fl[i].pencilList.RemoveAt(fl[i].pencilList.IndexOfValue(area));
+                        g.FillRectangle(b, area.X, area.Y, thickness*10, thickness*10);
+                    } 
+                }      
             }
 
             //Check if one of the shapes is on the bitmap, if yes deletes the whole shape
@@ -208,10 +215,26 @@ namespace Paint_App_OOP
             g.DrawEllipse(pen, s.X, s.Y, e.X - s.X, e.Y - s.Y);
 
         }
-       
+        public void DrawOutline(Graphics g, Point Start, Point End)
+        {
+            if (Selected)
+            {
+                Pen pen = new Pen(Color.Red, 1);
+
+                int X, Y, Width, Height;
+                X = Start.X - 3;
+                Y = Start.Y - 3;
+                Width = End.X - Start.X + 6;
+                Height = End.Y - Start.Y + 6;
+                g.DrawEllipse(pen, X, Y, Width, Height);
+            }
+        }
         public override bool isOn(Point endPoint, Point startPos,Point p)
         {
-            return ((p.X - startPos.X) ^ 2 / (endPoint.X - startPos.X) ^ 2 + (p.Y - startPos.Y) ^ 2 / (endPoint.Y - startPos.Y) ^ 2) <= 1;
+            return p.X <= Math.Max(End.X, Start.X) &&
+                p.X >= Math.Min(End.X, Start.X) &&
+                p.Y <= Math.Max(Start.Y, End.Y) &&
+                p.Y >= Math.Min(Start.Y, End.Y);
         }
     }
     [Serializable]
@@ -240,6 +263,32 @@ namespace Paint_App_OOP
             g.DrawRectangle(pen, Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y), Scale.X, Scale.Y);
 
         }
+        public void DrawOutline(Graphics g, Point Start, Point End)
+        {
+            if (Selected)
+            {
+                Pen pen = new Pen(Color.Red, 1);
+                int X, Y, Width, Height;
+                X = Start.X - 3;
+                Y = Start.Y - 3;
+                Width = End.X - Start.X + 6;
+                Height = End.Y - Start.Y + 6 ;
+                g.DrawRectangle(pen, X, Y, Width, Height);
+            }
+        }
+        public void Move(Graphics g, Point Start, Point End) {
+            if (Selected)
+            {
+                Pen pen = new Pen(color, 1);
+                int X, Y, Width, Height;
+                X = Start.X;
+                Y = Start.Y;
+                Width = End.X - Start.X;
+                Height = End.Y - Start.Y;
+                g.DrawRectangle(pen, X, Y, Width, Height);
+            }
+            
+        }
         public override bool isOn(Point endPoint, Point startPos, Point p)
         {
             return p.X <= Math.Max(End.X, Start.X) &&
@@ -267,6 +316,8 @@ namespace Paint_App_OOP
             Pen pen = new Pen(color, thickness);
             g.DrawLine(pen, startPos.X, startPos.Y, endPos.X, endPos.Y);
         }
+
+
         public override bool isOn(Point startPoint, Point endPoint, Point p)
         {
             return p.X <= Math.Max(End.X, Start.X) &&
@@ -275,7 +326,19 @@ namespace Paint_App_OOP
                 p.Y >= Math.Min(Start.Y, End.Y);
         }
 
+        public void DrawOutline(Graphics g, Point Start, Point End)
+        {
+            if (Selected)
+            {
+                Pen pen = new Pen(Color.Red, 1);
 
+                int X, Y, Width, Height;
+                X = Start.X - 2;
+                Y = Start.Y - 2;
+                
+                g.DrawLine(pen, X, Y, End.X + 1, End.Y + 1);
+            }
+        }
     }
     [Serializable]
     class FigureList
