@@ -18,3 +18,13 @@ C:\Users\pc\Source\Repos\Paint-App-Final\Paint App OOP\obj\Debug\Paint App OOP.c
 C:\Users\pc\Source\Repos\Paint-App-Final\Paint App OOP\obj\Debug\Paint App OOP.csproj.CoreCompileInputs.cache
 C:\Users\pc\Source\Repos\Paint-App-Final\Paint App OOP\obj\Debug\Paint App OOP.exe
 C:\Users\pc\Source\Repos\Paint-App-Final\Paint App OOP\obj\Debug\Paint App OOP.pdb
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\bin\Debug\Paint App OOP.exe.config
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\bin\Debug\Paint App OOP.exe
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\bin\Debug\Paint App OOP.pdb
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\obj\Debug\Paint App OOP.csproj.AssemblyReference.cache
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\obj\Debug\Paint_App_OOP.Paint.resources
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\obj\Debug\Paint_App_OOP.Properties.Resources.resources
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\obj\Debug\Paint App OOP.csproj.GenerateResource.cache
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\obj\Debug\Paint App OOP.csproj.CoreCompileInputs.cache
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\obj\Debug\Paint App OOP.exe
+C:\Users\galma\Source\Repos\Paint-App-Finale\Paint App OOP\obj\Debug\Paint App OOP.pdb

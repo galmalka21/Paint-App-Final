@@ -9,34 +9,35 @@ using System.Collections;
 
 namespace Paint_App_OOP
 {
+    [Serializable]
     abstract class Figures
     {
-        public Point Start,Scale,End;
         public Color color { get; set; }
-       
         public int count = 1;
         public int thickness = 1;
         public int index;
-       
-        //public Point Y
-        //{
-        //    get
-        //    {
-        //        return y;
-        //    }
-        //    set
-        //    {
-        //        y = value;
-        //    }
-        //}
+
         public abstract void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos);
+    }
+
+    [Serializable]
+    class Shapes : Figures
+    {
+        public Point Start, Scale, End;
+
+        public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos)
+        {
+            
+        }
         public virtual bool isOn(Point startPoint, Point endPoint, Point p)
         {
             return false;
         }
     }
+    [Serializable]
     class Pencil : Figures
     {
+        Point Start;
         int index = 1;
         public SortedList pencilList;
         public Pencil()
@@ -58,8 +59,7 @@ namespace Paint_App_OOP
         }
         public override void Draw(Color c, Graphics g, MouseEventArgs e,Point startPos)
         {
-            color = c;
-            SolidBrush b = new SolidBrush(c);
+            SolidBrush b = new SolidBrush(color);
             Point p = new Point(e.X, e.Y);
             Start = p;
             int count = pencilList.Count;
@@ -77,9 +77,11 @@ namespace Paint_App_OOP
         }
 
     }
+    [Serializable]
     class Eraser : Figures
     {
         int index = 2;
+        
         public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos)
         {
             SolidBrush b = new SolidBrush(c);
@@ -90,17 +92,17 @@ namespace Paint_App_OOP
         {
             //**
             SolidBrush b = new SolidBrush(c);
-            Pen pen = new Pen(Color.Red, 1);
+            Pen pen = new Pen(c, 1);
             int ct = fl.firgueList.Count; ;
-            int radiusX, radiusY;
+            float radiusX = 0, radiusY = 0;
+            double distance = 0;
 
 
             //Remove the pencil brush pixel by pixel if its in the list
             for (int i = 0; i < ct; ++i)
             {
-
                {
-                    for(int j = 0; j < thickness*5; j++)
+                    for(int j = 0; j < thickness; j++)
                     {
                         Point area = e.Location;
                         if (fl[i].pencilList.ContainsValue(area))
@@ -108,7 +110,6 @@ namespace Paint_App_OOP
                             fl[i].pencilList.RemoveAt(fl[i].pencilList.IndexOfValue(area));
                             g.FillRectangle(b, area.X, area.Y, thickness, thickness);
                         }
-
                     }   
                }    
             }
@@ -117,49 +118,57 @@ namespace Paint_App_OOP
             for (int i =0;i < sl.shapeList.Count; ++i)
             {
                 //Retangles
-                if (sl[i, 0].isOn(sl[i, 0].End, sl[i, 0].Start, e.Location))
+                try
                 {
-                    int scaleX = sl[i, 0].End.X - sl[i,0].Start.X ;
-                    int scaleY = sl[i, 0].End.Y - sl[i, 0].Start.Y;
-                    if (scaleX < 0)
-                        scaleX = scaleX * (-1);
-                    if (scaleY < 0)
-                        scaleY = scaleY * (-1);
-                    for (int k = 0;k < scaleX; ++k)
+                    if (sl[i, 0].isOn(sl[i, 0].End, sl[i, 0].Start, e.Location))
                     {
-                        g.FillRectangle(b, sl[i, 0].Start.X + k, sl[i, 0].Start.Y, 1, 1);
-                        g.FillRectangle(b, sl[i, 0].Start.X + k, sl[i, 0].End.Y, 1, 1);
-                    }
-                    for (int k = 0; k < scaleY; ++k)
-                    {
-                        g.FillRectangle(b, sl[i, 0].Start.X , sl[i, 0].Start.Y +k, 1, 1);
-                        g.FillRectangle(b, sl[i, 0].End.X, sl[i, 0].Start.Y + k, 1, 1);
-                    }
-                    sl.shapeList.RemoveAt(i);
-                    return;
-                }
-                //Circles
-                try {
-                    if (sl[i].isOn(sl[i].End, sl[i].Start, e.Location))
-                        radiusX = (sl[i].End.X - sl[i].Start.X) / 2;
-                    radiusY = (sl[i].End.Y - sl[i].Start.Y) / 2;
+                        int scaleX = Math.Abs(sl[i, 0].End.X - sl[i, 0].Start.X);
+                        int scaleY = Math.Abs(sl[i, 0].End.Y - sl[i, 0].Start.Y);
 
-                    {
-                        for (int j = 0; j < sl[i].Scale.Y; j++)
+                        for (int k = Math.Min(sl[i, 0].Start.X, sl[i, 0].End.X); k <= Math.Max(sl[i, 0].Start.X, sl[i, 0].End.X); ++k)
                         {
-                            g.FillRectangle(b, sl[i].Start.X + j, sl[i].Start.Y + j, thickness * 3, thickness * 3);
+                            g.FillRectangle(b, k, sl[i, 0].Start.Y, 1, 1);
+                            g.FillRectangle(b, k, sl[i, 0].End.Y, 1, 1);
                         }
-                        for (int j = 0; j < sl[i].Scale.X; j++)
+                        for (int k = Math.Min(sl[i, 0].Start.Y, sl[i, 0].End.Y); k <= Math.Max(sl[i, 0].Start.Y, sl[i, 0].End.Y); ++k)
                         {
-                            g.FillRectangle(b, sl[i].Start.X - j, sl[i].Start.Y - j, thickness * 3, thickness * 3);
+                            g.FillRectangle(b, sl[i, 0].Start.X, k, 1, 1);
+                            g.FillRectangle(b, sl[i, 0].End.X, k, 1, 1);
                         }
                         sl.shapeList.RemoveAt(i);
+                        return;
                     }
-                } catch
+                } catch (Exception error)
                 {
 
                 }
                 
+                //Circles
+                try {
+                    if (sl[i].isOn(sl[i].End, sl[i].Start, e.Location))
+                    {
+                        g.DrawEllipse(pen, sl[i].Start.X, sl[i].Start.Y, sl[i].End.X - sl[i].Start.X, (sl[i].End.Y - sl[i].Start.Y));
+                        sl.shapeList.RemoveAt(i);
+                        return;
+                    }
+                } catch (Exception error)
+                {
+
+                }
+                //Lines
+                try
+                {
+                    if (sl[i, 0, 0].isOn(sl[i, 0, 0].End, sl[i, 0, 0].Start, e.Location))
+                    {
+                        g.DrawLine(pen, sl[i,0,0].Start.X, sl[i,0,0].Start.Y, sl[i,0,0].End.X, sl[i,0,0].End.Y);
+                        sl.shapeList.RemoveAt(i);
+                        return;
+                    }
+                }
+                catch(Exception error)
+                {
+                    
+                }
             }
 
             //Remove the figure from the list if its count = 0
@@ -169,17 +178,17 @@ namespace Paint_App_OOP
                 {
                     if (fl[i].pencilList.Count == 0)
                     {
-                        fl.firgueList.RemoveAt(i);
+                        fl.firgueList.Remove(i);
                     }
                 }
                 catch { }
             }
         }
     }
-    class Circle : Figures
+    [Serializable]
+    class Circle : Shapes
     {
         int index = 3;
-        Point Start, Scale,End;
         public Circle()
         {
 
@@ -190,13 +199,13 @@ namespace Paint_App_OOP
             Scale.X = e.X - Start.X;
             Scale.Y = e.Y - Start.Y;
             End = e.Location;
-            Pen pen = new Pen(c, 1);
+            Pen pen = new Pen(color, 1);
             g.DrawEllipse(pen, Start.X, Start.Y, Scale.X, Scale.Y);
         }
         public void Draw(Color c,Graphics g,Point s,Point e)
         {
             Pen pen = new Pen(c, thickness);
-            g.DrawEllipse(pen, s.X, s.Y, e.X, e.Y);
+            g.DrawEllipse(pen, s.X, s.Y, e.X - s.X, e.Y - s.Y);
 
         }
        
@@ -205,77 +214,70 @@ namespace Paint_App_OOP
             return ((p.X - startPos.X) ^ 2 / (endPoint.X - startPos.X) ^ 2 + (p.Y - startPos.Y) ^ 2 / (endPoint.Y - startPos.Y) ^ 2) <= 1;
         }
     }
-
-    class Retrangle : Figures
+    [Serializable]
+    class Retrangle : Shapes
     {
         int index = 4;
-        Point Start, Scale, End;
         public Retrangle()
         {
 
         }
         public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos)
         {
-            Point tempPoint;
-            int tempX = 0, tempY = 0;
             Start = startPos;
             End = e.Location;
-            Scale.X = End.X - Start.X;
-            Scale.Y = End.Y - Start.Y;
-            //Left Down \>
-            if(Scale.X < 0 && Scale.Y > 0)
-            {
-                Scale.X = Scale.X * (-1);
-                tempX = Start.X;
-                Start.X = End.X;
-                End.X = tempX;
-            }
-            //Right Up 
-            else if(Scale.X > 0 && Scale.Y < 0)
-            {
-                Scale.Y = Scale.Y * (-1);
-                tempY = Start.Y;
-                Start.Y = End.Y;
-                End.Y = tempY;
-            }
-            //Left Up
-            else if(Scale.X < 0 && Scale.Y < 0)
-            {
-                Scale.X = Scale.X * (-1);
-                Scale.Y = Scale.Y * (-1);
-                tempPoint = Start;
-                Start = End;
-                End = Start;
+            Scale.X = Math.Abs(End.X - Start.X);
+            Scale.Y = Math.Abs(End.Y - Start.Y);
+            Pen pen = new Pen(color, 1);
+            g.DrawRectangle(pen, Math.Min(Start.X,End.X), Math.Min(Start.Y,End.Y), Scale.X, Scale.Y);
+        }
 
-            }
+        public void Draw(Color c, Graphics g, Point s, Point e)
+        {
+            Scale.X = Math.Abs(e.X - s.X);
+            Scale.Y = Math.Abs(e.Y - s.Y);
+            Pen pen = new Pen(color, thickness);
+            g.DrawRectangle(pen, Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y), Scale.X, Scale.Y);
 
-            Pen pen = new Pen(c, 1);
-            g.DrawRectangle(pen, Start.X, Start.Y, Scale.X, Scale.Y);
         }
         public override bool isOn(Point endPoint, Point startPos, Point p)
         {
-            if (p.X <= End.X && p.X >= Start.X && p.Y <= End.Y && p.Y >= Start.Y)
-            {
-                return true;
-            } else
-            {
-                return false;
-            }
+            return p.X <= Math.Max(End.X, Start.X) &&
+                p.X >= Math.Min(End.X, Start.X) &&
+                p.Y <= Math.Max(Start.Y, End.Y) &&
+                p.Y >= Math.Min(Start.Y, End.Y);
 
             
         }
     }
-    class Line : Figures
+    [Serializable]
+    class Line : Shapes
     {
         int index = 5;
 
         public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos)
         {
-
+            Pen pen = new Pen(color, thickness);
+            End = e.Location;
+            g.DrawLine(pen, startPos.X, startPos.Y, e.X, e.Y);
         }
 
-        
+        public void Draw(Color c, Graphics g, Point endPos, Point startPos)
+        {
+            Pen pen = new Pen(color, thickness);
+            g.DrawLine(pen, startPos.X, startPos.Y, endPos.X, endPos.Y);
+        }
+        public override bool isOn(Point startPoint, Point endPoint, Point p)
+        {
+            return p.X <= Math.Max(End.X, Start.X) &&
+                p.X >= Math.Min(End.X, Start.X) &&
+                p.Y <= Math.Max(Start.Y, End.Y) &&
+                p.Y >= Math.Min(Start.Y, End.Y);
+        }
+
+
     }
+    [Serializable]
     class FigureList
     {
         public SortedList firgueList;
@@ -311,8 +313,17 @@ namespace Paint_App_OOP
                     firgueList[index] = value;
             }
         }
+        public void Remove(int element)
+        {
+            if (element >= 0 && element < firgueList.Count)
+            {
+                for (int i = element; i < firgueList.Count - 1; i++)
+                    firgueList[i] = firgueList[i + 1];
+                firgueList.RemoveAt(firgueList.Count - 1);
+            }
+        }
     }
-
+    [Serializable]
     class ShapeList
     {
         public SortedList shapeList;
@@ -341,6 +352,20 @@ namespace Paint_App_OOP
                 if (index >= shapeList.Count)
                     return (Retrangle)null;
                 return (Retrangle)shapeList.GetByIndex(index);
+            }
+            set
+            {
+                if (index <= shapeList.Count)
+                    shapeList[index] = value;
+            }
+        }
+        public Line this[int index, int key = 0,int t = 0]
+        {
+            get
+            {
+                if (index >= shapeList.Count)
+                    return (Line)null;
+                return (Line)shapeList.GetByIndex(index);
             }
             set
             {
