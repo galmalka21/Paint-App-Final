@@ -211,15 +211,34 @@ namespace Paint_App_OOP
         }
         public void Draw(Color c,Graphics g,Point s,Point e)
         {
+            Start = s;
+            End = e;
             Pen pen = new Pen(c, thickness);
             g.DrawEllipse(pen, s.X, s.Y, e.X - s.X, e.Y - s.Y);
 
         }
-        public void DrawOutline(Graphics g, Point Start, Point End)
+
+        public void Move(Graphics g, Point NewLocation)
         {
             if (Selected)
             {
-                Pen pen = new Pen(Color.Red, 1);
+                Pen pen = new Pen(color, 1);
+                Pen penWhite = new Pen(Color.White, 1);
+                DrawOutline(Color.White, g, Start, End);
+                g.DrawEllipse(penWhite, Start.X, Start.Y, Scale.X, Scale.Y);
+                Start = new Point(NewLocation.X - (Scale.X / 2), NewLocation.Y - (Scale.Y / 2));
+                End = new Point(Start.X + (Scale.X), (Start.Y) + (Scale.Y));
+                g.DrawEllipse(pen, NewLocation.X - (Scale.X / 2), NewLocation.Y - (Scale.Y / 2), Scale.X, Scale.Y);
+                Selected = false;
+
+            }
+
+        }
+        public void DrawOutline(Color c,Graphics g, Point Start, Point End)
+        {
+            if (Selected)
+            {
+                Pen pen = new Pen(c, 1);
 
                 int X, Y, Width, Height;
                 X = Start.X - 3;
@@ -263,11 +282,11 @@ namespace Paint_App_OOP
             g.DrawRectangle(pen, Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y), Scale.X, Scale.Y);
 
         }
-        public void DrawOutline(Graphics g, Point Start, Point End)
+        public void DrawOutline(Color c,Graphics g, Point Start, Point End)
         {
             if (Selected)
             {
-                Pen pen = new Pen(Color.Red, 1);
+                Pen pen = new Pen(c, 1);
                 int X, Y, Width, Height;
                 X = Start.X - 3;
                 Y = Start.Y - 3;
@@ -276,16 +295,18 @@ namespace Paint_App_OOP
                 g.DrawRectangle(pen, X, Y, Width, Height);
             }
         }
-        public void Move(Graphics g, Point Start, Point End) {
+        public void Move(Graphics g, Point NewLocation) {
             if (Selected)
             {
                 Pen pen = new Pen(color, 1);
-                int X, Y, Width, Height;
-                X = Start.X;
-                Y = Start.Y;
-                Width = End.X - Start.X;
-                Height = End.Y - Start.Y;
-                g.DrawRectangle(pen, X, Y, Width, Height);
+                Pen penWhite = new Pen(Color.White, 1);
+                DrawOutline(Color.White, g, Start, End);
+                g.DrawRectangle(penWhite, Start.X, Start.Y, Scale.X, Scale.Y);
+                Start = new Point(NewLocation.X - (Scale.X / 2), NewLocation.Y - (Scale.Y / 2));
+                End = new Point(Start.X + (Scale.X), (Start.Y) + (Scale.Y));
+                g.DrawRectangle(pen, NewLocation.X - (Scale.X / 2), NewLocation.Y - (Scale.Y / 2), Scale.X, Scale.Y);
+                Selected = false;
+                
             }
             
         }
@@ -326,18 +347,37 @@ namespace Paint_App_OOP
                 p.Y >= Math.Min(Start.Y, End.Y);
         }
 
-        public void DrawOutline(Graphics g, Point Start, Point End)
+        public void DrawOutline(Color c,Graphics g, Point Start, Point End)
         {
             if (Selected)
             {
-                Pen pen = new Pen(Color.Red, 1);
+                SolidBrush b = new SolidBrush(c);
 
                 int X, Y, Width, Height;
-                X = Start.X - 2;
-                Y = Start.Y - 2;
+                X = Start.X;
+                Y = Start.Y;
                 
-                g.DrawLine(pen, X, Y, End.X + 1, End.Y + 1);
+                g.FillRectangle(b, X, Y, 4, 4);
+                g.FillRectangle(b, End.X,End.Y, 4, 4);
             }
+        }
+        public void Move(Graphics g, Point NewLocation)
+        {
+            if (Selected)
+            {
+                Pen pen = new Pen(color, 1);
+                Pen penWhite = new Pen(Color.White, 1);
+                DrawOutline(Color.White, g, Start, End);
+                Scale.X = End.X - Start.X;
+                Scale.Y = End.Y - Start.Y;
+                g.DrawLine(penWhite, Start.X, Start.Y, End.X, End.Y);
+                Start = new Point(NewLocation.X - (Scale.X / 2), NewLocation.Y - (Scale.Y / 2));
+                End = new Point(NewLocation.X + (Scale.X / 2), NewLocation.Y + (Scale.Y / 2));
+                g.DrawLine(pen, Start.X, Start.Y, End.X, End.Y);
+                Selected = false;
+
+            }
+
         }
     }
     [Serializable]

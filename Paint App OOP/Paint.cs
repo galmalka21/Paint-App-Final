@@ -50,6 +50,7 @@ namespace Paint_App_OOP
         Point endPoint, startPoint;
         int index , countFL , countSL;
         bool load = false;
+        bool move = false;
         
 
        
@@ -124,6 +125,15 @@ namespace Paint_App_OOP
             panel_board.Invalidate();
         }
 
+        public Point getCenter(Point Start, Point End)
+        {
+            Point Center;
+            int ScaleX = (End.X - Start.X) / 2;
+            int ScaleY = (End.Y - Start.Y) / 2;
+
+            Center = new Point(ScaleX, ScaleY);
+            return Center;
+        }
 
         //Mouse Movement On Board
         private void panel_board_MouseMove(object sender, MouseEventArgs e)
@@ -132,6 +142,8 @@ namespace Paint_App_OOP
             {
                 switch (index)
                 {
+                    case 0:
+                        break;
                     case 1:
                         pencil.thickness = bar_thickness.Value;
                         pencil.Draw(color, g, e, startPoint);
@@ -180,6 +192,7 @@ namespace Paint_App_OOP
         //ReDraw Panel After Load
         public void reDraw()
         {
+            g.Clear(Color.White);
             for (int i = 0; i < sl.shapeList.Count; i++)
             {
                 //Circles
@@ -294,7 +307,7 @@ namespace Paint_App_OOP
                     if (sl[i].isOn(sl[i].End, sl[i].Start, e))
                     {
                         sl[i].Selected = true;
-                        sl[i].DrawOutline(g, sl[i].Start, sl[i].End);
+                        sl[i].DrawOutline(Color.Red,g, sl[i].Start, sl[i].End);
                     }
                 }
                 catch
@@ -306,7 +319,7 @@ namespace Paint_App_OOP
                     if (sl[i, 0].isOn(sl[i, 0].End, sl[i, 0].Start, e))
                     {
                         sl[i, 0].Selected = true;
-                        sl[i, 0].DrawOutline(g, sl[i, 0].Start, sl[i, 0].End);
+                        sl[i, 0].DrawOutline(Color.Red,g, sl[i, 0].Start, sl[i, 0].End);
                     }
                 }
                 catch
@@ -318,7 +331,7 @@ namespace Paint_App_OOP
                     if (sl[i, 0, 0].isOn(sl[i, 0, 0].End, sl[i, 0, 0].Start, e))
                     {
                         sl[i, 0, 0].Selected = true;
-                        sl[i, 0, 0].DrawOutline(g, sl[i, 0, 0].Start, sl[i, 0, 0].End);
+                        sl[i, 0, 0].DrawOutline(Color.Red, g, sl[i, 0, 0].Start, sl[i, 0, 0].End);
                     }
                 }
                 catch
@@ -331,13 +344,14 @@ namespace Paint_App_OOP
         //Move Objects
         public void MoveObject(Point e)
         {
+            Point center;
             for (int i = 0; i < countSL; i++)
             {
                 try
                 {
-                    if (sl[i].isOn(sl[i].End, sl[i].Start, e))
+                    if (sl[i].Selected)
                     {
-                        sl[i].Move(g, startPoint, e);
+                        sl[i].Move(g, e);
                     }
                 }
                 catch
@@ -346,9 +360,9 @@ namespace Paint_App_OOP
                 }
                 try
                 {
-                    if (sl[i, 0].isOn(sl[i, 0].End, sl[i, 0].Start, e))
+                    if (sl[i,0].Selected)
                     {
-                        sl[i, 0].Move(g, startPoint, e);
+                        sl[i, 0].Move(g, e);
                     }
                 }
                 catch
@@ -357,9 +371,9 @@ namespace Paint_App_OOP
                 }
                 try
                 {
-                    if (sl[i, 0, 0].isOn(sl[i, 0, 0].End, sl[i, 0, 0].Start, e))
+                    if (sl[i, 0,0].Selected)
                     {
-                        sl[i, 0, 0].DrawOutline(g, startPoint, e);
+                        sl[i, 0,0].Move(g, e);
                     }
                 }
                 catch
@@ -368,6 +382,7 @@ namespace Paint_App_OOP
                 }
 
             }
+            reDraw();
         }
 
 
@@ -414,6 +429,51 @@ namespace Paint_App_OOP
             this.Close();
         }
 
+        private void btn_undo_Click(object sender, EventArgs e)
+        {
+            
+                if (sl.shapeList.Count > 0)
+                {
+                    try
+                    {
+                        sl[sl.shapeList.Count - 1].color = Color.White;
+                        sl[sl.shapeList.Count - 1].Draw(Color.White, g, sl[sl.shapeList.Count - 1].Start, sl[sl.shapeList.Count - 1].End);
+
+                        sl.shapeList.RemoveAt(sl.shapeList.Count - 1);
+                    }
+                    catch
+                    {
+
+                    }
+                    try
+                    {
+                        sl[sl.shapeList.Count - 1, 0].color = Color.White;
+                        sl[sl.shapeList.Count - 1, 0].Draw(Color.White, g, sl[sl.shapeList.Count - 1, 0].Start, sl[sl.shapeList.Count - 1, 0].End);
+
+                        sl.shapeList.RemoveAt(sl.shapeList.Count - 1);
+                    }
+                    catch
+                    {
+
+                    }
+                    try
+                    {
+                        sl[sl.shapeList.Count - 1, 0, 0].color = Color.White;
+                        sl[sl.shapeList.Count - 1, 0, 0].Draw(Color.White, g, sl[sl.shapeList.Count - 1, 0, 0].End, sl[sl.shapeList.Count - 1, 0, 0].Start);
+
+                        sl.shapeList.RemoveAt(sl.shapeList.Count - 1);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (fl.firgueList.Count > 0)
+                {
+                    fl.firgueList.RemoveAt(fl.firgueList.Count - 1);
+                }
+                reDraw();
+        }
         private void btn_clear_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < fl.firgueList.Count; i++)
@@ -451,6 +511,7 @@ namespace Paint_App_OOP
 
         private void btn_load_Click(object sender, EventArgs e)
         {
+            index = -1;
             load = true;
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             openFileDialog1.InitialDirectory = Directory.GetCurrentDirectory();// + "..\\myModels";
