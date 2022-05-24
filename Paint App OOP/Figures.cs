@@ -33,6 +33,7 @@ namespace Paint_App_OOP
         {
             return false;
         }
+        
     }
     [Serializable]
     class Pencil : Figures
@@ -57,7 +58,7 @@ namespace Paint_App_OOP
                     pencilList[index] = value;
             }
         }
-        public override void Draw(Color c, Graphics g, MouseEventArgs e,Point startPos)
+        public override void Draw(Color c, Graphics g, MouseEventArgs e, Point startPos)
         {
             SolidBrush b = new SolidBrush(color);
             Point p = new Point(e.X, e.Y);
@@ -66,16 +67,7 @@ namespace Paint_App_OOP
             pencilList.Add(count, p);
             g.FillRectangle(b, e.X, e.Y, thickness, thickness);
         }
-        public void Draw(Color c,Graphics g)
-        {
-            SolidBrush b = new SolidBrush(c);
-            for(int i = 0;i < pencilList.Count; ++i)
-            {
-                g.FillRectangle(b, Start.X, Start.Y, thickness, thickness);
-            }
-            
-        }
-        public void Draw(Color c, Graphics g,Point p)
+        public void Draw(Color c, Graphics g, Point p)
         {
             SolidBrush b = new SolidBrush(c);
             for (int i = 0; i < pencilList.Count; ++i)
@@ -84,6 +76,7 @@ namespace Paint_App_OOP
             }
 
         }
+        ~Pencil() { }
 
     }
     [Serializable]
@@ -103,8 +96,6 @@ namespace Paint_App_OOP
             SolidBrush b = new SolidBrush(c);
             Pen pen = new Pen(c, 1);
             int ct = fl.firgueList.Count; ;
-            float radiusX = 0, radiusY = 0;
-            double distance = 0;
 
 
             //Remove the pencil brush pixel by pixel if its in the list
@@ -191,6 +182,7 @@ namespace Paint_App_OOP
                 catch { }
             }
         }
+        ~Eraser() { }
     }
     [Serializable]
     class Circle : Shapes
@@ -255,6 +247,7 @@ namespace Paint_App_OOP
                 p.Y <= Math.Max(Start.Y, End.Y) &&
                 p.Y >= Math.Min(Start.Y, End.Y);
         }
+        ~Circle() { }
     }
     [Serializable]
     class Retrangle : Shapes
@@ -319,6 +312,7 @@ namespace Paint_App_OOP
 
             
         }
+        ~Retrangle() { }
     }
     [Serializable]
     class Line : Shapes
@@ -347,7 +341,7 @@ namespace Paint_App_OOP
                 p.Y >= Math.Min(Start.Y, End.Y);
         }
 
-        public void DrawOutline(Color c,Graphics g, Point Start, Point End)
+        public void DrawOutline(Color c, Graphics g, Point Start, Point End)
         {
             if (Selected)
             {
@@ -356,9 +350,9 @@ namespace Paint_App_OOP
                 int X, Y, Width, Height;
                 X = Start.X;
                 Y = Start.Y;
-                
+
                 g.FillRectangle(b, X, Y, 4, 4);
-                g.FillRectangle(b, End.X,End.Y, 4, 4);
+                g.FillRectangle(b, End.X, End.Y, 4, 4);
             }
         }
         public void Move(Graphics g, Point NewLocation)
@@ -379,6 +373,7 @@ namespace Paint_App_OOP
             }
 
         }
+        ~Line() { }
     }
     [Serializable]
     class FigureList
@@ -402,29 +397,7 @@ namespace Paint_App_OOP
                     firgueList[index] = value;
             }
         }
-        public Figures this[int index,int e]
-        {
-            get
-            {
-                if (index >= firgueList.Count)
-                    return (Figures)null;
-                return (Figures)firgueList.GetByIndex(index);
-            }
-            set
-            {
-                if (index <= firgueList.Count)
-                    firgueList[index] = value;
-            }
-        }
-        public void Remove(int element)
-        {
-            if (element >= 0 && element < firgueList.Count)
-            {
-                for (int i = element; i < firgueList.Count - 1; i++)
-                    firgueList[i] = firgueList[i + 1];
-                firgueList.RemoveAt(firgueList.Count - 1);
-            }
-        }
+        ~FigureList() { }
     }
     [Serializable]
     class ShapeList
@@ -476,14 +449,6 @@ namespace Paint_App_OOP
                     shapeList[index] = value;
             }
         }
-        public void Remove(int element)
-        {
-            if (element >= 0 && element < shapeList.Count)
-            {
-                for (int i = element; i < shapeList.Count - 1; i++)
-                    shapeList[i] = shapeList[i + 1];
-                shapeList.RemoveAt(shapeList.Count - 1);
-            }
-        }
+        ~ShapeList() { }
     }
 }
